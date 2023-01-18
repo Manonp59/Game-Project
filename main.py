@@ -12,9 +12,6 @@ player_victory = 0
 # Scores file creation
 create_file()
 choice = principal_menu()
-while choice == "3":
-    print("THE RULES OF THE GAME")
-    choice = principal_menu()
 # If the player choose to play a game
 while choice == "1":
     # Reset of the scores and the number of potion

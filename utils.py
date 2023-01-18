@@ -2,6 +2,7 @@ import random as rd
 import csv
 from termcolor import colored
 import pyfiglet
+import pygame
 
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
@@ -94,10 +95,12 @@ def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:
     """
     if player_lives > enemy_lives:
         print('You won !!!!!')
+        play_victory_sound()
         player_victory += 1
     else : 
         print('Enemy wons...')
         enemy_victory += 1
+        play_defeat_sound()
     return player_victory, enemy_victory
 
 
@@ -200,12 +203,29 @@ def principal_menu() -> str:
     elif choice == "2":
         return choice 
     elif choice == '3':
+        print("RULES OF THE GAME")
+        choice = input('What do you want to do ? To play press 1, to end the game press 2.')
         return choice
     else : 
         print('Please, press 1 or 2.')
-        choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')
+        choice = input('What do you want to do ? To play press 1, to end the game press 2.')
         
 def display_welcome():
     ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
     print(ascii_banner)      
     
+def play_victory_sound():
+    pygame.init()
+    pygame.mixer.music.load("sucess.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)    
+        pygame.quit
+
+def play_defeat_sound():
+    pygame.init()
+    pygame.mixer.music.load("defeat.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)    
+        pygame.quit
