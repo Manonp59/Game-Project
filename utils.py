@@ -79,11 +79,14 @@ def display_scores(opponent_lives:int, my_lives:int):
 def who_won(my_lives:int, opponent_lives:int,your_victory:int, opponent_victory:int):
     """The function checks which player has more lives and prints the result of the game.
     If the player has more lives, it will print "I won !!!!!".
-    Otherwise, it will print "Opponent won..."
+    Otherwise, it will print "Opponent won...". It also counts the number of victories for each player.
 
     Args:
         opponent_lives (int): representing the number of lives the opponent has
         my_lives (int): representing the number of lives the player has
+        
+    Returns: 
+        tuple:the number of victories of each player
     """
     if my_lives > opponent_lives:
         print('I won !!!!!')
@@ -95,15 +98,26 @@ def who_won(my_lives:int, opponent_lives:int,your_victory:int, opponent_victory:
 
 
 def create_file():
+    """This function creates a CSV file named 'scores.csv' if it does not exist, and writes a header row with the following titles: "Game n°", "You", "Opponent", "Victory". This function is used to initialize the file to store the scores of the played games.
+    """
     with open('scores.csv', 'a', newline='') as scores:
-        write=csv.writer(scores)    
+        write=csv.writer(scores)
+        #creation of the columns's head
         write.writerow(["","Game n°", "You", "Opponent", "Victory"])
         
 
-def store_scores(game, m_lives, opponent_lives):
+def store_scores(game:int, m_lives:int, opponent_lives:int):
+    """This function stores the scores of a game in a CSV file named 'scores.csv. It uses the CSV library to write the game name, player lives, opponent lives, and the winner of the game (either 'You' or 'Opponent') to a new row in the CSV file.
+
+    Args:
+        game (int): the name of the game
+        m_lives (int): the number of lives the player has
+        opponent_lives (int): the number of lives the opponent has. 
+    """
     with open('scores.csv', 'a', newline='') as scores:
         write=csv.writer(scores) 
         victory = ""
+        # Check to define the round's winner
         if m_lives>opponent_lives :
             victory ="You"
         else : 
@@ -111,22 +125,40 @@ def store_scores(game, m_lives, opponent_lives):
         write.writerow(["",game, m_lives, opponent_lives,victory])  
   
         
-def total_score(your_victory, opponent_victory):
-        with open('scores.csv', 'a', newline='') as scores:
-            write=csv.writer(scores) 
-            winner = ""
-            if your_victory>opponent_victory :
-                winner ="You"
-            elif your_victory<opponent_victory : 
-                winner ="Opponent"
-            else:
-                winner = "Equality"
-                write.writerow([])
-            write.writerow(["","Your victory", "Opponent victory", "Winner"])
-            write.writerow(["Total",your_victory, opponent_victory, winner])
+def total_score(your_victory:int, opponent_victory:int):
+    """
+    Store the total scores of the games played in a CSV file. 
+    The file is created if it does not exist.
+
+    Args:
+    your_victory (int): the number of your victory
+    opponent_victory (int): the number of opponent victory
+
+    """
+    with open('scores.csv', 'a', newline='') as scores:
+        write=csv.writer(scores) 
+        winner = ""
+        #Check to define the game's winner
+        if your_victory>opponent_victory :
+            winner ="You"
+        elif your_victory<opponent_victory : 
+            winner ="Opponent"
+        else:
+            winner = "Equality"
+            write.writerow([])
+        write.writerow(["","Your victory", "Opponent victory", "Winner"])
+        write.writerow(["Total",your_victory, opponent_victory, winner])
 
 
-def menu(potion):
+def menu(potion:int)->str:
+    """"This function is a menu for a game where the player can choose to attack or drink a potion. It prompts the player to input their choice (either '1' to attack or '2' to drink a potion). If the player inputs an invalid choice, they will be prompted again. If the player has no potions, they will automatically be forced to attack and the function will return '1'."
+    
+    Args:
+        potion (int): the number of potions the player has.
+        
+    Returns:
+        str: the player's choice
+    """
     if potion > 0 :
         choice = input('To attack, type 1. To drink potion, type 2.')
         if choice == "1" or choice == "2":
@@ -140,6 +172,14 @@ def menu(potion):
     
     
 def principal_menu(game):
+    """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1) or quitting the game (choice 2). If the user enters a valid input (1 or 2), the function returns that input. Otherwise, the user will be prompted to enter a valid input.
+
+    Args:
+    game (str): the name of the game
+
+    Returns:
+    str: the player's choice (either "1" or "2")
+    """
     choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')
     if choice == "1":
         return choice 
