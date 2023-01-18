@@ -1,5 +1,5 @@
 import random as rd
-
+import csv
 
 def no_one_is_dead (my_lives:int,opponent_lives:int) -> bool:
     """Function wich verify that no one is dead.
@@ -47,6 +47,7 @@ def attack(player:str, opponent_lives: int, my_lives :int) -> int :
             my_lives = 0
     return opponent_lives, my_lives
 
+
 def drink_potion(my_lives:int, potion:int)-> tuple:
     """The function increases the player's lives by a random amount between 15 and 50, but not exceeding 50.
     It also decrements the number of potions by 1.
@@ -74,7 +75,8 @@ def display_scores(opponent_lives:int, my_lives:int):
     """
     print(f'Opponent has {opponent_lives} lives. I have {my_lives} lives.')
 
-def who_won(my_lives:int, opponent_lives:int,my_victory:int, opponent_victory:int):
+
+def who_won(my_lives:int, opponent_lives:int,your_victory:int, opponent_victory:int):
     """The function checks which player has more lives and prints the result of the game.
     If the player has more lives, it will print "I won !!!!!".
     Otherwise, it will print "Opponent won..."
@@ -85,15 +87,44 @@ def who_won(my_lives:int, opponent_lives:int,my_victory:int, opponent_victory:in
     """
     if my_lives > opponent_lives:
         print('I won !!!!!')
-        my_victory += 1
+        your_victory += 1
     else : 
         print('Opponent won...')
         opponent_victory += 1
+    return your_victory, opponent_victory
 
-    
-            
-def store_scores():
-    pass
+
+def create_file():
+    with open('scores.csv', 'a', newline='') as scores:
+        write=csv.writer(scores)    
+        write.writerow(["","Game n°", "You", "Opponent", "Victory"])
+        
+
+def store_scores(game, m_lives, opponent_lives):
+    with open('scores.csv', 'a', newline='') as scores:
+        write=csv.writer(scores) 
+        victory = ""
+        if m_lives>opponent_lives :
+            victory ="You"
+        else : 
+            victory ="Opponent"
+        write.writerow(["",game, m_lives, opponent_lives,victory])  
+  
+        
+def total_score(your_victory, opponent_victory):
+        with open('scores.csv', 'a', newline='') as scores:
+            write=csv.writer(scores) 
+            winner = ""
+            if your_victory>opponent_victory :
+                winner ="You"
+            elif your_victory<opponent_victory : 
+                winner ="Opponent"
+            else:
+                winner = "Equality"
+                write.writerow([])
+            write.writerow(["","Your victory", "Opponent victory", "Winner"])
+            write.writerow(["Total",your_victory, opponent_victory, winner])
+
 
 def menu(potion):
     if potion > 0 :
@@ -106,6 +137,7 @@ def menu(potion):
     else :
         print("You don't have potion anymore. You will attack.")
         return "1" 
+    
     
 def principal_menu(game):
     choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')

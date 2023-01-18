@@ -1,10 +1,7 @@
-from utils import no_one_is_dead, attack, drink_potion, display_scores, who_won, store_scores, menu, principal_menu
+from utils import no_one_is_dead, attack, drink_potion, display_scores, who_won, store_scores, menu, principal_menu, create_file, total_score
 import random as rd 
 
 # Variables 
-op_lives = 50
-m_lives = 50
-potion = 3
 game = 0
 opponent_victory = 0
 your_victory = 0
@@ -12,6 +9,9 @@ your_victory = 0
 create_file()
 choice = principal_menu(game)
 while choice == "1":
+    op_lives = 50
+    m_lives = 50
+    potion = 3
     game += 1
     # Displaying scores
     display_scores(op_lives, m_lives)
@@ -51,9 +51,11 @@ while choice == "1":
                 opponent_lives, m_lives = attack('opponent',op_lives, m_lives)
                 display_scores(op_lives, m_lives)
     # Someone is dead, so displays who won 
-    who_won(m_lives, op_lives)
+    your_victory,opponent_victory = who_won(m_lives, op_lives, your_victory,opponent_victory)
     # Store scores in a file
-    store_scores() 
+    store_scores(game, m_lives, op_lives) 
     choice = principal_menu(game)
+
+total_score(your_victory, opponent_victory)
     
 
