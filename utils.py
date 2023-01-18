@@ -73,7 +73,7 @@ def display_scores(opponent_lives:int, my_lives:int):
         opponent_lives (int): representing the number of lives the opponent has
         my_lives (int): representing the number of lives the player has
     """
-    print(f'Opponent has {opponent_lives} lives. I have {my_lives} lives.')
+    return f'Opponent has {opponent_lives} lives. I have {my_lives} lives.'
 
 
 def who_won(my_lives:int, opponent_lives:int,your_victory:int, opponent_victory:int):
@@ -168,10 +168,10 @@ def menu(potion:int)->str:
             choice = input('To attack, type 1. To drink potion, type 2.')
     else :
         print("You don't have potion anymore. You will attack.")
-        return "1" 
+        return "1"
     
     
-def principal_menu(game):
+def principal_menu():
     """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1) or quitting the game (choice 2). If the user enters a valid input (1 or 2), the function returns that input. Otherwise, the user will be prompted to enter a valid input.
 
     Args:
