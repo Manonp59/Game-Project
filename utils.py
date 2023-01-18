@@ -1,5 +1,7 @@
 import random as rd
 import csv
+from termcolor import colored
+import pyfiglet
 
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
@@ -72,7 +74,11 @@ def display_scores(enemy_lives:int, player_lives:int):
         enemy_lives (int): represents the number of lives the enemy has
         player_lives (int): represents the number of lives the player has
     """
-    return f'Enemy has {enemy_lives} lives. I have {player_lives} lives.'
+    player_score = f'YOU: {player_lives}HP'           
+    enemy_score= f'ENEMY: {enemy_lives}HP'
+    print(colored(player_score, 'black', 'on_blue', ['bold']), end='\t')
+    print(colored(enemy_score, 'black', 'on_red', ['bold']))
+    #return f'Enemy has {enemy_lives} lives. I have {player_lives} lives.'
 
 
 def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:int) -> tuple:
@@ -185,13 +191,18 @@ def principal_menu() -> str:
     Returns:
     str: the player's choice (either "1" or "2")
     """
-    choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')
+    choice = input('What do you want to do ? To play press 1, to end the game press 2, to display the rules press 3.')
     if choice == "1":
         return choice 
-    elif choice == "2" :
+    elif choice == "2":
         return choice 
+    elif choice == '3':
+        return choice
     else : 
         print('Please, press 1 or 2.')
         choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')
         
-         
+def display_welcome():
+    ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
+    print(ascii_banner)      
+    
