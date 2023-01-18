@@ -18,13 +18,13 @@ class TestWithUnittest(unittest.TestCase):
     
       
     def test_display_score(self):
-        self.assertEqual(display_scores(15,20), f'Opponent has 15 lives. I have 20 lives.') 
+        self.assertEqual(display_scores(15,20), f'Enemy has 15 lives. I have 20 lives.') 
         
     
     def test_create_file(self):
         create_file()
         with open('scores.csv','r') as fichier:
-            self.assertIn('Victory' and 'Game n°' and 'You' and 'Opponent', fichier.read())
+            self.assertIn('Victory' and 'Game n°' and 'You' and 'Enemy', fichier.read())
      
      
     # Define possible values of inputs and verify the return
