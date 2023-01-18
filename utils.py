@@ -105,6 +105,9 @@ def create_file():
     """This function creates a CSV file named 'scores.csv' if it does not exist, and writes a header row with the following titles: "Game n°", "You", "Enemy", "Victory". \n 
     This function is used to initialize the file to store the scores of the played games.
     """
+    # If the file alreay exist from a previous game, it delete its content
+    with open('scores.csv', 'w') as file:
+            file.truncate()
     with open('scores.csv', 'a', newline='') as scores:
         write=csv.writer(scores)
         # Creation of the column headers of the scores table
