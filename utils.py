@@ -8,20 +8,22 @@ def no_one_is_dead (my_lives,opponent_lives):
         return True 
 
 
-def attack(player, opponent_lives, my_lives):
-    if player == 'me' :
-        print('ok')
-        opponent_lives -= (rd.randint(5,10))
-        print(opponent_lives)
+def attack(player):
+    damage = 0
+    if player == 'you' :
+        damage = rd.randint(5,10)
     else :
-        my_lives -= (rd.randint(5,15))
+        damage = rd.randint(5,15)
+    return damage
 
-def drink_potion(my_lives):
+def drink_potion(my_lives, potion):
     my_lives += (rd.randint(15,50))
     if my_lives >50 :
         my_lives = 50
     potion -= 1
     drinked_potion = True
+    return my_lives, potion, drinked_potion
+
 
 def display_scores(opponent_lives, my_lives):
     print(f'Opponent has {opponent_lives} lives. I have {my_lives} lives.')
@@ -46,8 +48,7 @@ def menu(potion):
             choice = input('To attack, type 1. To drink potion, type 2.')
     else :
         print("You don't have potion anymore. You will attack.")
-        choice == 1
-        return choice 
+        return "1" 
         
         
     
