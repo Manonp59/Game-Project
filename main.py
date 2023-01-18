@@ -7,7 +7,7 @@ enemy_victory = 0
 player_victory = 0
 
 create_file()
-choice = principal_menu(game)
+choice = principal_menu()
 # If the player choose to play a game
 while choice == "1":
     # Reset of the scores and the number of potion
@@ -58,7 +58,7 @@ while choice == "1":
     # Storage of the scores in a file
     store_scores(game, player_lives, enemy_lives) 
     # Asks if the player wants to play an other game or end it
-    choice = principal_menu(game)
+    choice = principal_menu()
 
 # Adds the total wins of each player in the scores file and displays the final winner
 total_score(player_victory, enemy_victory)
