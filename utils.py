@@ -47,7 +47,7 @@ def attack(player:str, enemy_lives: int, player_lives :int) -> int:
     return enemy_lives, player_lives
 
 
-def drink_potion(player_lives:int, potion:int)-> tuple:
+def drink_potion(player_lives:int, potion:int) -> tuple:
     """The function increases the player's lives by a random amount between 15 and 50, but not exceeding 50. \n
     It also decrements the number of potions by 1.
 
@@ -75,7 +75,7 @@ def display_scores(enemy_lives:int, player_lives:int):
     print(f'Enemy has {enemy_lives} lives. You have {player_lives} lives.')
 
 
-def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:int):
+def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:int) -> tuple:
     """The function checks which player has more lives and prints who is the winner. \n
     It also counts the number of victories for each player.
 
@@ -151,7 +151,7 @@ def total_score(player_victory:int, enemy_victory:int):
         write.writerow(["Total",player_victory, enemy_victory, winner])
 
 
-def menu(potion:int)->str:
+def menu(potion:int) -> str:
     """"This function is a menu for a game where the player can choose to attack or drink a potion. \n 
     It prompts the player to input their choice (either '1' to attack or '2' to drink a potion). \n
     If the player inputs an invalid choice, they will be prompted again. \n
@@ -175,7 +175,7 @@ def menu(potion:int)->str:
         return "1" 
     
     
-def principal_menu():
+def principal_menu() -> str:
     """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1) or quitting the game (choice 2). 
     If the user enters a valid input (1 or 2), the function returns that input. Otherwise, the user will be prompted to enter a valid input.
 
