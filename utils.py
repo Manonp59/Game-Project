@@ -1,28 +1,44 @@
 import random as rd
 
 
-def no_one_is_dead (my_lives,opponent_lives):
+def no_one_is_dead (my_lives:int,opponent_lives:int) -> bool:
+    """Function wich verify that no one is dead.
+
+    Args:
+        my_lives (int): lives of the player
+        opponent_lives (int): lives of the opponent 
+
+    Returns:
+        bool : True if no one is dead, False if someone is dead 
+    """
+    # Scores comparaison
     if my_lives <= 0 or opponent_lives <= 0:
         return False 
     else :
         return True 
 
 
-def attack(player):
+def attack(player:str, opponent_lives: int, my_lives :int) -> int :
+    
     damage = 0
     if player == 'you' :
         damage = rd.randint(5,10)
+        opponent_lives -= damage
+        if opponent_lives < 0 :
+            opponent_lives = 0
     else :
         damage = rd.randint(5,15)
-    return damage
+        my_lives -= damage
+        if my_lives < 0 :
+            my_lives = 0
+    return opponent_lives, my_lives
 
 def drink_potion(my_lives, potion):
     my_lives += (rd.randint(15,50))
     if my_lives >50 :
         my_lives = 50
     potion -= 1
-    drinked_potion = True
-    return my_lives, potion, drinked_potion
+    return my_lives, potion
 
 
 def display_scores(opponent_lives, my_lives):
