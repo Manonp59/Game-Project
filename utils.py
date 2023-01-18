@@ -18,7 +18,7 @@ def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
         return True 
 
 
-def attack(player:str, enemy_lives: int, player_lives :int) -> int :
+def attack(player:str, enemy_lives: int, player_lives :int) -> int:
     """The function calculate damage depending on whether the player or the enemy is attacking. \n
     If the player is attacking, the function will randomly choose a value between 5 and 10 to subtract from the enemy's lives. \n
     If the enemy is attacking, the function will randomly choose a value between 5 and 15 to subtract from the player's lives. \n
@@ -32,17 +32,17 @@ def attack(player:str, enemy_lives: int, player_lives :int) -> int :
         tuple containing the updated number of lives of the enemy and the player. 
     """
     damage = 0
-    if player == 'you' :
+    if player == 'you':
         damage = rd.randint(5,10)
         enemy_lives -= damage
         # It checks if the lives are less than 0 and sets it to 0 if it is
-        if enemy_lives < 0 :
+        if enemy_lives < 0:
             enemy_lives = 0
     else :
         damage = rd.randint(5,15)
         player_lives -= damage
         # It checks if the lives are less than 0 and sets it to 0 if it is
-        if player_lives < 0 :
+        if player_lives < 0:
             player_lives = 0
     return enemy_lives, player_lives
 
@@ -59,7 +59,7 @@ def drink_potion(player_lives:int, potion:int)-> tuple:
         tuple: containing the updated number of lives, number of potions.
     """
     player_lives += (rd.randint(15,50))
-    if player_lives >50 :
+    if player_lives > 50:
         player_lives = 50
     potion -= 1
     return player_lives, potion
@@ -105,24 +105,24 @@ def create_file():
         write.writerow(["","Game n°", "You", "Enemy", "Victory"])
         
 
-def store_scores(game:int, m_lives:int, enemy_lives:int):
+def store_scores(game:int, player_lives:int, enemy_lives:int):
     """This function stores the scores of a game in a CSV file named 'scores.csv. \n
     It uses the CSV library to write the game number, player lives, enemy lives, and the winner of the game (either 'You' or 'enemy') to a new row in the CSV file.
 
     Args:
         game (int): the name of the game
-        m_lives (int): the number of lives the player has
+        player_lives (int): the number of lives the player has
         enemy_lives (int): the number of lives the enemy has. 
     """
     with open('scores.csv', 'a', newline='') as scores:
         write=csv.writer(scores) 
         victory = ""
         # Check to define the round's winner
-        if m_lives>enemy_lives :
+        if player_lives > enemy_lives:
             victory ="You"
         else : 
             victory ="enemy"
-        write.writerow(["",game, m_lives, enemy_lives,victory])  
+        write.writerow(["",game, player_lives, enemy_lives,victory])  
   
         
 def total_score(player_victory:int, enemy_victory:int):
@@ -138,16 +138,16 @@ def total_score(player_victory:int, enemy_victory:int):
         write=csv.writer(scores) 
         winner = ""
         #Check to define the game's winner
-        if player_victory>enemy_victory :
+        if player_victory > enemy_victory:
             winner ="You"
-        elif player_victory<enemy_victory : 
-            winner ="enemy"
+        elif player_victory < enemy_victory: 
+            winner ="Enemy"
         else:
             winner = "Equality"
             # Skip a row
             write.writerow([])
         # Creation of the column headers of the total scores table
-        write.writerow(["","Player's victory", "enemy victory", "Winner"])
+        write.writerow(["","Player's victories", "Enemy's victories", "Winner"])
         write.writerow(["Total",player_victory, enemy_victory, winner])
 
 
