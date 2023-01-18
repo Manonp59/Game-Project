@@ -171,7 +171,7 @@ def menu(potion:int)->str:
         return "1" 
     
     
-def principal_menu(game):
+def principal_menu():
     """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1) or quitting the game (choice 2). If the user enters a valid input (1 or 2), the function returns that input. Otherwise, the user will be prompted to enter a valid input.
 
     Args:
