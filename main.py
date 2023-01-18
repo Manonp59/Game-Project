@@ -3,59 +3,63 @@ import random as rd
 
 # Variables 
 game = 0
-opponent_victory = 0
-your_victory = 0
+enemy_victory = 0
+player_victory = 0
 
 create_file()
 choice = principal_menu(game)
+# If the player choose to play a game
 while choice == "1":
-    op_lives = 50
+    # Reset of the scores and the number of potion
+    enemy_lives = 50
     m_lives = 50
     potion = 3
+    # Update of the game number
     game += 1
-    # Displaying scores
-    display_scores(op_lives, m_lives)
+    # Display of the scores
+    display_scores(enemy_lives, m_lives)
 
-    # Verify that no one is dead 
-    while no_one_is_dead(m_lives, op_lives):
-            # Displays who plays
+    # Check if no one died
+    while no_one_is_dead(m_lives, enemy_lives):
+            # Display who plays
             print("It's your turn.")
-            # Ask for choices : attack or drink potion
+            # Asks for choices : attack or drink potion
             choice = menu(potion)
             # If player choose attack
-            if choice=='1':
-                # Update scores with attack
-                op_lives, my_lives = attack('you', op_lives, m_lives)
-                display_scores(op_lives, m_lives)
-                if not no_one_is_dead(m_lives, op_lives):
+            if choice =='1':
+                # Update of the scores with attack
+                enemy_lives, my_lives = attack('you', enemy_lives, m_lives)
+                display_scores(enemy_lives, m_lives)
+                if not no_one_is_dead(m_lives, enemy_lives):
                     break 
                 else :
                     # Displays who plays
-                    print("It's opponent's turn.")
-                    # Update score with attack
-                    op_lives , m_lives = attack('opponent', op_lives, m_lives)
-                    display_scores(op_lives, m_lives)
+                    print("It's enemy's turn.")
+                    # Update of the scores with attack
+                    enemy_lives , m_lives = attack('enemy', enemy_lives, m_lives)
+                    display_scores(enemy_lives, m_lives)
             # If player choose potion
-            elif choice =='2':
-                # Update scores with potion
+            elif choice == '2':
+                # Update of the scores with potion
                 m_lives, potion = drink_potion(m_lives, potion)
-                display_scores(op_lives, m_lives)
+                display_scores(enemy_lives, m_lives)
                 # Displays who plays
-                print("It's opponent's turn.")
-                # Update score with attack
-                op_lives, m_lives= attack('opponent',op_lives, m_lives)
-                display_scores(op_lives, m_lives)
-                # Player skips his turn
+                print("It's enemy's turn.")
+                # Update of the score with attack
+                enemy_lives, m_lives= attack('enemy',enemy_lives, m_lives)
+                display_scores(enemy_lives, m_lives)
+                # The player skips his turn
                 print("You chose to drink a potion in the previous turn, you must skip your turn")
-                # Update scores with attack
-                opponent_lives, m_lives = attack('opponent',op_lives, m_lives)
-                display_scores(op_lives, m_lives)
-    # Someone is dead, so displays who won 
-    your_victory,opponent_victory = who_won(m_lives, op_lives, your_victory,opponent_victory)
-    # Store scores in a file
-    store_scores(game, m_lives, op_lives) 
+                # Update of scores with attack
+                enemy_lives, m_lives = attack('enemy',enemy_lives, m_lives)
+                display_scores(enemy_lives, m_lives)
+    # Someone is dead, so it displays who won 
+    player_victory,enemy_victory = who_won(m_lives, enemy_lives, player_victory,enemy_victory)
+    # Storage of the scores in a file
+    store_scores(game, m_lives, enemy_lives) 
+    # Asks if the player wants to play an other game or end it
     choice = principal_menu(game)
 
-total_score(your_victory, opponent_victory)
+# Adds the total wins of each player in the scores file and displays the final winner
+total_score(player_victory, enemy_victory)
     
-
