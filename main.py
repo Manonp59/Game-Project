@@ -55,10 +55,10 @@ while choice == "1":
                 # The player skips his turn
                 print("You chose to drink a potion in the previous turn, you must skip your turn")
                 # Update of scores with attack
-                enemy_lives, player_lives = attack('enemy',enemy_lives, player_lives)
+                enemy_lives, player_lives = attack('enemy', enemy_lives, player_lives)
                 display_scores(enemy_lives, player_lives)
     # Someone is dead, so it displays who won 
-    player_victory,enemy_victory = who_won(player_lives, enemy_lives, player_victory,enemy_victory)
+    player_victory,enemy_victory = who_won(player_lives, enemy_lives, player_victory, enemy_victory)
     # Storage of the scores in a file
     store_scores(game, player_lives, enemy_lives) 
     # Asks if the player wants to play an other game or end it
