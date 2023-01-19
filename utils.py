@@ -95,12 +95,12 @@ def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:
     """
     if player_lives > enemy_lives:
         print('You won !!!!!')
-        play_victory_sound()
+        #play_victory_sound()
         player_victory += 1
     else : 
         print('Enemy wons...')
         enemy_victory += 1
-        play_defeat_sound()
+        #play_defeat_sound()
     return player_victory, enemy_victory
 
 
@@ -188,14 +188,13 @@ def menu(potion:int) -> str:
     
     
 def principal_menu() -> str:
-    """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1) or quitting the game (choice 2). 
-    If the user enters a valid input (1 or 2), the function returns that input. Otherwise, the user will be prompted to enter a valid input.
+    """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1), quitting the game (choice 2) or displaying the rules (choice 3). 
 
     Args:
     game (str): the name of the game
 
     Returns:
-    str: the player's choice (either "1" or "2")
+    str: the player's choice (either "1", "2" or "3")
     """
     choice = input('What do you want to do ? To play press 1, to end the game press 2, to display the rules press 3.')
     if choice == "1":
@@ -207,8 +206,8 @@ def principal_menu() -> str:
         choice = input('What do you want to do ? To play press 1, to end the game press 2.')
         return choice
     else : 
-        print('Please, press 1 or 2.')
-        choice = input('What do you want to do ? To play press 1, to end the game press 2.')
+        print('Please, press 1, 2 or 3.')
+        choice = input()
         
 def display_welcome():
     ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
@@ -229,3 +228,30 @@ def play_defeat_sound():
     while pygame.mixer.music.get_busy():
         pygame.time.Clock().tick(10)    
         pygame.quit
+
+def choose_pokemon():
+    pokemon_list = ["Bulbizarre", "Salamèche", "Carapuce"]
+    while True:
+        print("It's time to choose your pokemon !")
+        for i, pokemon in enumerate(pokemon_list):
+            print(f"{i+1}. {pokemon}")    
+        choice = input()
+        if choice.isnumeric() and int(choice) in range(1, 4):
+            print("Do you confirm your choice? [y/n])")
+            confirm = input()
+            if confirm == "y":
+                player = pokemon_list[int(choice)-1]
+                break
+            elif confirm == "n":
+                continue
+            else:
+                print("Invalid input, please choose again")
+    enemy = rd.choice(pokemon_list) 
+    print("You chose:", player)
+    print(f"The enemy chose {enemy}")
+    
+    return player, enemy  
+     
+        
+
+
