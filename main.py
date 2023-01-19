@@ -1,6 +1,9 @@
-from utils import no_one_is_dead, attack, drink_potion, display_scores, who_won, store_scores, menu, principal_menu, create_file, total_score
+from utils import no_one_is_dead, attack, drink_potion, display_scores, who_won, store_scores, menu, principal_menu, create_file, total_score, display_welcome
 import random as rd 
 
+
+display_welcome()
+    
 # Variables 
 game = 0
 enemy_victory = 0
@@ -18,7 +21,7 @@ while choice == "1":
     # Update of the game number
     game += 1
     # Display of the scores
-    print(display_scores(enemy_lives, player_lives))
+    display_scores(enemy_lives, player_lives)
 
     # Check if no one died
     while no_one_is_dead(player_lives, enemy_lives):
@@ -30,7 +33,7 @@ while choice == "1":
             if choice =='1':
                 # Update of the scores with attack
                 enemy_lives, my_lives = attack('you', enemy_lives, player_lives)
-                print(display_scores(enemy_lives, player_lives))
+                display_scores(enemy_lives, player_lives)
                 if not no_one_is_dead(player_lives, enemy_lives):
                     break 
                 else :
@@ -38,22 +41,22 @@ while choice == "1":
                     print("It's enemy's turn.")
                     # Update of the scores with attack
                     enemy_lives , player_lives = attack('enemy', enemy_lives, player_lives)
-                    print(display_scores(enemy_lives, player_lives))
+                    display_scores(enemy_lives, player_lives)
             # If player choose potion
             elif choice == '2':
                 # Update of the scores with potion
                 player_lives, potion = drink_potion(player_lives, potion)
-                print(display_scores(enemy_lives, player_lives))
+                display_scores(enemy_lives, player_lives)
                 # Displays who plays
                 print("It's enemy's turn.")
                 # Update of the score with attack
                 enemy_lives, player_lives= attack('enemy',enemy_lives, player_lives)
-                print(display_scores(enemy_lives, player_lives))
+                display_scores(enemy_lives, player_lives)
                 # The player skips his turn
                 print("You chose to drink a potion in the previous turn, you must skip your turn")
                 # Update of scores with attack
                 enemy_lives, player_lives = attack('enemy',enemy_lives, player_lives)
-                print(display_scores(enemy_lives, player_lives))
+                display_scores(enemy_lives, player_lives)
     # Someone is dead, so it displays who won 
     player_victory,enemy_victory = who_won(player_lives, enemy_lives, player_victory,enemy_victory)
     # Storage of the scores in a file

@@ -1,5 +1,8 @@
 import random as rd
 import csv
+from termcolor import colored
+import pyfiglet
+import pygame
 
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
@@ -72,7 +75,11 @@ def display_scores(enemy_lives:int, player_lives:int):
         enemy_lives (int): represents the number of lives the enemy has
         player_lives (int): represents the number of lives the player has
     """
-    return f'Enemy has {enemy_lives} lives. I have {player_lives} lives.'
+    player_score = f'YOU: {player_lives}HP'           
+    enemy_score= f'ENEMY: {enemy_lives}HP'
+    print(colored(player_score, 'black', 'on_blue', ['bold']), end='\t')
+    print(colored(enemy_score, 'black', 'on_red', ['bold']))
+    #return f'Enemy has {enemy_lives} lives. I have {player_lives} lives.'
 
 
 def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:int) -> tuple:
@@ -88,10 +95,12 @@ def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:
     """
     if player_lives > enemy_lives:
         print('You won !!!!!')
+        play_victory_sound()
         player_victory += 1
     else : 
         print('Enemy wons...')
         enemy_victory += 1
+        play_defeat_sound()
     return player_victory, enemy_victory
 
 
@@ -99,6 +108,9 @@ def create_file():
     """This function creates a CSV file named 'scores.csv' if it does not exist, and writes a header row with the following titles: "Game n°", "You", "Enemy", "Victory". \n 
     This function is used to initialize the file to store the scores of the played games.
     """
+    # If the file alreay exist from a previous game, it delete its content
+    with open('scores.csv', 'w') as file:
+            file.truncate()
     with open('scores.csv', 'a', newline='') as scores:
         write=csv.writer(scores)
         # Creation of the column headers of the scores table
@@ -185,13 +197,35 @@ def principal_menu() -> str:
     Returns:
     str: the player's choice (either "1" or "2")
     """
-    choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')
+    choice = input('What do you want to do ? To play press 1, to end the game press 2, to display the rules press 3.')
     if choice == "1":
         return choice 
-    elif choice == "2" :
+    elif choice == "2":
         return choice 
+    elif choice == '3':
+        print("RULES OF THE GAME")
+        choice = input('What do you want to do ? To play press 1, to end the game press 2.')
+        return choice
     else : 
         print('Please, press 1 or 2.')
-        choice = input('Welcome. What do you want to do ? To play press 1, to end the game press 2.')
+        choice = input('What do you want to do ? To play press 1, to end the game press 2.')
         
-         
+def display_welcome():
+    ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
+    print(ascii_banner)      
+    
+def play_victory_sound():
+    pygame.init()
+    pygame.mixer.music.load("sucess.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)    
+        pygame.quit
+
+def play_defeat_sound():
+    pygame.init()
+    pygame.mixer.music.load("defeat.wav")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        pygame.time.Clock().tick(10)    
+        pygame.quit
