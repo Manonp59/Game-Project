@@ -21,36 +21,7 @@ def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
         return True 
 
 
-def attack(player:str, enemy_lives: int, player_lives :int) -> int:
-    """The function calculate damage depending on whether the player or the enemy is attacking. \n
-    If the player is attacking, the function will randomly choose a value between 5 and 10 to subtract from the enemy's lives. \n
-    If the enemy is attacking, the function will randomly choose a value between 5 and 15 to subtract from the player's lives. \n
-
-    Args:
-    player (str): representing the attacking player ('you' or 'enemy')
-    enemy_lives (int):representing the number of lives the enemy has
-    player_lives (int): representing the number of lives the player has
-
-    Returns:
-        tuple containing the updated number of lives of the enemy and the player. 
-    """
-    damage = 0
-    if player == 'you':
-        damage = rd.randint(5,10)
-        enemy_lives -= damage
-        # It checks if the lives are less than 0 and sets it to 0 if it is
-        if enemy_lives < 0:
-            enemy_lives = 0
-    else :
-        damage = rd.randint(5,15)
-        player_lives -= damage
-        # It checks if the lives are less than 0 and sets it to 0 if it is
-        if player_lives < 0:
-            player_lives = 0
-    return enemy_lives, player_lives
-
-
-def drink_potion(player_lives:int, potion:int) -> tuple:
+def drink_potion(who_plays, player_lives:int, player_potion:int, enemy_lives:int, enemy_potion:int) -> tuple:
     """The function increases the player's lives by a random amount between 15 and 50, but not exceeding 50. \n
     It also decrements the number of potions by 1.
 
@@ -61,14 +32,22 @@ def drink_potion(player_lives:int, potion:int) -> tuple:
     Returns:
         tuple: containing the updated number of lives, number of potions.
     """
-    player_lives += (rd.randint(15,50))
-    if player_lives > 50:
-        player_lives = 50
-    potion -= 1
-    return player_lives, potion
+    if who_plays == 'you':
+        print('You chose to drink a potion. Tchin !')
+        player_lives += (rd.randint(15,50))
+        if player_lives > 50:
+            player_lives = 50
+        player_potion -= 1
+    else : 
+        print('Enemy chose to drink a potion. Tchin !')
+        enemy_lives +=(rd.randint(15,50))
+        if enemy_lives > 50:
+            enemy_lives = 50
+        enemy_potion -= 1
+    return player_lives, player_potion, enemy_lives, enemy_potion
 
 
-def display_scores(enemy_lives:int, player_lives:int):
+def display_scores(player_lives:int, enemy_lives:int):
     """Displays the number of lives of both the enemy and the player.
     
     Args:
@@ -95,12 +74,12 @@ def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:
     """
     if player_lives > enemy_lives:
         print('You won !!!!!')
-        #play_victory_sound()
+        # play_victory_sound()
         player_victory += 1
     else : 
         print('Enemy wons...')
         enemy_victory += 1
-        #play_defeat_sound()
+        # play_defeat_sound()
     return player_victory, enemy_victory
 
 
@@ -163,7 +142,7 @@ def total_score(player_victory:int, enemy_victory:int):
         write.writerow(["Total",player_victory, enemy_victory, winner])
 
 
-def menu(potion:int) -> str:
+def menu(who_plays:int, player_potion, enemy_potion, enemy_lives) -> str:
     """"This function is a menu for a game where the player can choose to attack or drink a potion. \n 
     It prompts the player to input their choice (either '1' to attack or '2' to drink a potion). \n
     If the player inputs an invalid choice, they will be prompted again. \n
@@ -175,16 +154,29 @@ def menu(potion:int) -> str:
     Returns:
         str: the player's choice
     """
-    if potion > 0 :
-        choice = input('To attack, type 1. To drink potion, type 2.')
-        if choice == "1" or choice == "2":
-            return choice
-        else : 
-            print('Please type a correct value.')
-            choice = input('To attack, type 1. To drink potion, type 2.')
+    if who_plays == 'you':
+        if player_potion > 0 :
+            choice = input(f'You have {player_potion} potion(s). To attack, type 1. To drink potion, type 2.')
+            if choice == "1" or choice == "2":
+                return choice
+            else : 
+                print('Please type a correct value.')
+                choice = input('To attack, type 1. To drink potion, type 2.')
+        else :
+            print("You don't have potion anymore. You must attack.")
+            return "1"
     else :
-        print("You don't have potion anymore. You will attack.")
-        return "1"
+        if enemy_potion > 0 and enemy_lives < 35 :
+            choice = rd.randint(1,2)
+            return str(choice)
+        elif enemy_potion > 0 and enemy_lives < 15 :
+            return '2'
+        elif enemy_potion < 1 :
+            print("Enemy doesn't have potion anymore. He must attack.")
+            return "1"
+        else :
+            return '1'
+            
     
     
 def principal_menu() -> str:
@@ -229,6 +221,156 @@ def play_defeat_sound():
         pygame.time.Clock().tick(10)    
         pygame.quit
 
+
+def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, player_lives, enemy_lives):
+    """This function simulates an attack on the player or enemy depending on who's turn it is.
+       The attack is based on the type of the player and enemy pokemon and the number of special hits available.
+       The player can choose if he uses a special hit. 
+
+    Args:
+        who_plays (str) : 'you' if it's the player's turn, 'enemy' if it's the enemy's turn
+        player (str) : the type of player's pokemon ('Bulbizarre', 'Carapuce', 'Salamèche')
+        enemy (str) : the type of enemy's pokemon ('Bulbizarre', 'Carapuce', 'Salamèche')
+        player_special_hits (int) : the number of remaining special hits for the player
+        enemy_special_hits (int) : the number of remaining special hits for the enemy
+        player_lives (int) : the number of lives remaining for the player's pokemon
+        enemy_lives (int) : the number of lives remaining for the enemy's pokemon
+
+    Returns:
+        tuple of 4 integers : 
+        - player_lives: the remaining number of lives for the player's pokemon
+        - enemy_lives: the remaining number of lives for the enemy's pokemon
+        - player_special_hits: the remaining number of special hits for the player
+        - enemy_special_hits: the remaining number of special hits for the enemy
+    """
+    # Who's turn is
+    if who_plays == 'you':
+        # Verify if special hits are available
+        if player_special_hits > 0 :
+            # Normal hit
+            if player == 'Bulbizarre' and (enemy == 'Bulbizarre' or enemy == 'Salamèche'):
+                damage = rd.randint(5,15)
+                enemy_lives -= damage
+                print('You hit enemy with a normal hit.')
+            # Special hit
+            if player == 'Bulbizarre' and enemy == 'Carapuce' :
+                choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
+                if choice == "1":
+                    damage = rd.randint(15,25)
+                    enemy_lives -= damage
+                    player_special_hits -= 1
+                    print('Special hit ! You strangle the enemy with a vine !')
+                elif choice == "2":
+                    damage = rd.randint(5,15)
+                    enemy_lives -= damage
+                    print('You hit enemy with a normal hit.')
+            # Normal hit
+            if player == 'Carapuce' and (enemy == 'Carapuce' or enemy == 'Bulbizarre'):
+                damage = rd.randint(5,15)
+                enemy_lives -= damage
+                print('You hit enemy with a normal hit.')
+            # Special hit or not
+            if player == 'Carapuce' and enemy == 'Salamèche':
+                choice = input(f'You can use special hit against Salamèche ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
+                if choice == "1":
+                    damage = rd.randint(15,25)
+                    enemy_lives -= damage
+                    player_special_hits -= 1
+                    print('Special hit ! You launch a powerful jet of water on your enemy !')
+                elif choice == "2":
+                    damage = rd.randint(5,15)
+                    enemy_lives -= damage
+                    print('You hit enemy with a normal hit.')
+            # Normal hit
+            if player == 'Salamèche' and (enemy == 'Salamèche' or enemy == 'Carapuce'):
+                damage = rd.randint(5,15)
+                enemy_lives -= damage
+                print('You hit enemy with a normal hit.')
+            # Special hit
+            if player == 'Salamèche' and enemy == 'Bulbizarre' :
+                choice = input(f'You can use special hit against Bulbizarrere ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
+                if choice == "1":
+                    damage = rd.randint(15,25)
+                    enemy_lives -= damage
+                    player_special_hits -= 1
+                    print('Special hit ! You throw a ball of fire on your enemy !')
+                elif choice == "2":
+                    damage = rd.randint(5,15)
+                    enemy_lives -= damage
+                    print('You hit enemy with a normal hit.')
+        # Special hits aren't available, so normal hit
+        else : 
+            print("You don't have special hit anymore. You hit enemy with normal hit.")
+            damage = rd.randint(5,15)
+            enemy_lives -= damage
+        # Avoid negative scores
+        if enemy_lives < 0:
+            enemy_lives = 0
+    # Who's turn is 
+    if who_plays == 'enemy':
+        # Verify if special hits are available
+        if enemy_special_hits > 0 :
+            # Normal hit
+            if enemy == 'Bulbizarre' and (player == 'Bulbizarre' or player == 'Salamèche'):
+                damage = rd.randint(5,15)
+                player_lives -= damage
+                print('Enemy hits you with a normal hit.')
+            # Special hit
+            if enemy == 'Bulbizarre' and player == 'Carapuce' :
+                choice = rd.randint(1,2)
+                if choice == 1 :
+                    damage = rd.randint(15,25)
+                    player_lives -= damage
+                    enemy_special_hits -= 1
+                    print('Special hit ! Enenmy strangle you with a vine !')
+                elif choice == 2 :
+                    damage = rd.randint(5,15)
+                    player_lives -= damage
+                    print('Enemy hits you with a normal hit.')
+            # Normal hit
+            if enemy == 'Carapuce' and (player == 'Carapuce' or player == 'Bulbizarre'):
+                damage = rd.randint(5,15)
+                player_lives -= damage
+                print('Enemy hits you with a normal hit.')
+            # Special hit
+            if enemy == 'Carapuce' and player == 'Salamèche' :
+                choice = rd.randint(1,2)
+                if choice == 1:
+                    damage = rd.randint(15,25)
+                    player_lives -= damage
+                    enemy_special_hits -= 1
+                    print('Special hit ! Enemy launch a powerful jet of water on you !')
+                elif choice == 2:
+                    damage = rd.randint(5,15)
+                    player_lives -= damage
+                    print('Enemy hits you with a normal hit.')
+            # Normal hit
+            if enemy == 'Salamèche' and (player == 'Salamèche' or player == 'Carapuce'):
+                damage = rd.randint(5,15)
+                player_lives -= damage
+                print('Enemy hits you with a normal hit.')
+            # Special hit
+            if enemy == 'Salamèche' and player == 'Bulbizarre' :
+                choice = rd.randint(1,2)
+                if choice == 1:
+                    damage = rd.randint(15,25)
+                    player_lives -= damage
+                    enemy_special_hits -= 1
+                    print('Special hit ! Enemy throw a ball of fire on you !')
+                elif choice == 2:
+                    damage = rd.randint(5,15)
+                    player_lives -= damage
+                    print('Enemy hits you with a normal hit.')
+        # Special hits aren't available anymore
+        else : 
+            damage = rd.randint(5,15)
+            player_lives -= damage
+            print('Enemy hits you with a normal hit.')
+        # Avoid negative scores
+        if player_lives < 0:
+            player_lives = 0
+    return player_lives, enemy_lives, player_special_hits, enemy_special_hits
+
 def choose_pokemon():
     pokemon_list = ["Bulbizarre", "Salamèche", "Carapuce"]
     while True:
@@ -250,8 +392,15 @@ def choose_pokemon():
     print("You chose:", player)
     print(f"The enemy chose {enemy}")
     
-    return player, enemy  
-     
-        
+    return player, enemy
+
+player = 'Bulbizarre'
+enemy = 'Bulbizarre'
+player_special_hits = 2
+enemy_special_hits = 2
+enemy_lives = 50
+player_lives = 50
 
 
+
+    
