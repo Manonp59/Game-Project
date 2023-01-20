@@ -23,6 +23,10 @@ class TestWithUnittest(unittest.TestCase):
     
     def test_create_file(self):
         create_file()
+        # Check if the file 'scores.csv' exists
+        self.assertTrue(os.path.exists('scores.csv'))
+        # Check if the file is not empty
+        self.assertGreater(os.path.getsize('scores.csv'), 0)
         with open('scores.csv','r') as fichier:
             self.assertIn('Victory' and 'Game n°' and 'You' and 'Enemy', fichier.read())
      
