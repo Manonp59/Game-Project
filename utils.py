@@ -4,6 +4,10 @@ from termcolor import colored
 import pyfiglet
 from playsound import playsound
 
+# Variables
+game = 0
+enemy_victory = 0
+player_victory = 0
 
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
