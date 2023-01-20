@@ -233,6 +233,9 @@ def principal_menu() -> str:
     elif choice == '3':
         display_rules()
         choice = input('What do you want to do ? To play press 1, to end the game press 2.')
+        while choice != "1" and choice != "2":
+            print('Please, press 1, 2 or 3.')
+            choice = input()
         return choice
     else : 
         print('Please, press 1, 2 or 3.')
