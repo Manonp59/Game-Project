@@ -2,7 +2,7 @@ import random as rd
 import csv
 from termcolor import colored
 import pyfiglet
-import pygame
+from playsound import playsound
 
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
@@ -47,18 +47,41 @@ def drink_potion(who_plays, player_lives:int, player_potion:int, enemy_lives:int
     return player_lives, player_potion, enemy_lives, enemy_potion
 
 
-def display_scores(player_lives:int, enemy_lives:int):
-    """Displays the number of lives of both the enemy and the player.
+def display_scores(player_lives:int, enemy_lives:int, player:str, enemy:str):
+    """Displays the pokémon and the number of lives of both the enemy and the player.
     
     Args:
         enemy_lives (int): represents the number of lives the enemy has
         player_lives (int): represents the number of lives the player has
+        player (str): name of the pokémon chosen by the player
+        enemy (str) : name of the enemy's pokémon
     """
     player_score = f'YOU: {player_lives}HP'           
     enemy_score= f'ENEMY: {enemy_lives}HP'
-    print(colored(player_score, 'black', 'on_blue', ['bold']), end='\t')
+    # Calling of de drawAscii function to display the right pokémons
+    if player == 'Bulbizarre':
+        if enemy == 'Bulbizarre':
+            draw_ascii("Pokémons_Ascii/bulbul")
+        elif enemy == 'Salamèche':
+            draw_ascii("Pokémons_Ascii/bulsal")
+        elif enemy == 'Carapuce':
+            draw_ascii("Pokémons_Ascii/bulcar")
+    if player == 'Salamèche':
+        if enemy == 'Bulbizarre':
+            draw_ascii("Pokémons_Ascii/salbul")
+        elif enemy == 'Salamèche':
+            draw_ascii("Pokémons_Ascii/salsal")
+        elif enemy == 'Carapuce':
+            draw_ascii("Pokémons_Ascii/salcar")
+    if player == 'Carapuce':
+        if enemy == 'Bulbizarre':
+            draw_ascii("Pokémons_Ascii/carbul")
+        elif enemy == 'Salamèche':
+            draw_ascii("Pokémons_Ascii/carsal")
+        elif enemy == 'Carapuce':
+            draw_ascii("Pokémons_Ascii/carcar")
+    print(colored('\t\t'+player_score, 'black', 'on_blue', ['bold']), end='\t\t\t\t\t')
     print(colored(enemy_score, 'black', 'on_red', ['bold']))
-    #return f'Enemy has {enemy_lives} lives. I have {player_lives} lives.'
 
 
 def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:int) -> tuple:
@@ -74,12 +97,12 @@ def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:
     """
     if player_lives > enemy_lives:
         print('You won !!!!!')
-        # play_victory_sound()
+        play_sound("Sounds/sucess")
         player_victory += 1
     else : 
         print('Enemy wons...')
         enemy_victory += 1
-        # play_defeat_sound()
+        play_sound("Sounds/defeat")
     return player_victory, enemy_victory
 
 
@@ -177,8 +200,7 @@ def menu(who_plays:int, player_potion, enemy_potion, enemy_lives) -> str:
             return "1"
         else :
             return '1'
-            
-    
+               
     
 def principal_menu() -> str:
     """   This function displays a main menu for the game and prompts the user to choose between playing (choice 1), quitting the game (choice 2) or displaying the rules (choice 3). 
@@ -198,32 +220,52 @@ def principal_menu() -> str:
     elif choice == "2":
         return choice 
     elif choice == '3':
-        print("RULES OF THE GAME")
+        display_rules()
         choice = input('What do you want to do ? To play press 1, to end the game press 2.')
         return choice
-        
+    else : 
+        print('Please, press 1, 2 or 3.')
+        choice = input()
+
+
+def display_rules():
+    """Dsiplay the rules of the game
+    """
+    print("")
+    print("You must choose your Pokémon from Bulbizarre (Grass type), Salamèche (Fire type), and Carapuce (Water type).")
+    print("The opponent's Pokémon will be assigned at random. \n Carapuce has an advantage over Salamèche. \n Salamèche has an advantage over Blubizarre.\n Bulbizarre has an advantage over Carapuce.")
+    print("")
+    print("You will start the game with 50 HP each. Each turn, you will have the choice to attack the opponent or drink a potion. \n Then it will be the opponent's turn to make the same choice. The game ends when one of you has 0 HP.")
+    print("")
+    print("Attacks:")
+    print("\t - classic attacks unlimited, they inflict between 5 and 15 damage points to the opponent")
+    print("\t - 2 special attacks that inflict maximum damage if your Pokémon has an advantage over the opponent's Pokémon, \n causing them to lose between 15 and 25 HP, and behave like a classic attack otherwise.")
+    print("")
+    print("Potions:")
+    print("\t - you have 3 potions that can recover between 15 and 50 HP")
+    print("")
+    print("Good luck! Get ready!") 
+    print("")
+ 
+           
 def display_welcome():
+    """Displays an ASCII banner with the message "WELCOME TO POKEMON FIGHT" using the pyfiglet library.
+    """
+    
     ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
     print(ascii_banner)      
+ 
+
+def play_sound(music:str) -> None:
+    """Play the sound from a wav file.
     
-def play_victory_sound():
-    pygame.init()
-    pygame.mixer.music.load("sucess.wav")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)    
-        pygame.quit
+    Arg:
+    music (str): The name of the wav file to play.
+    """
+    playsound(music+".wav")
+    
 
-def play_defeat_sound():
-    pygame.init()
-    pygame.mixer.music.load("defeat.wav")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        pygame.time.Clock().tick(10)    
-        pygame.quit
-
-
-def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, player_lives, enemy_lives):
+def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, player_lives, enemy_lives) -> None:
     """This function simulates an attack on the player or enemy depending on who's turn it is.
        The attack is based on the type of the player and enemy pokemon and the number of special hits available.
        The player can choose if he uses a special hit. 
@@ -390,7 +432,14 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
             player_lives = 0
     return player_lives, enemy_lives, player_special_hits, enemy_special_hits
 
-def choose_pokemon():
+
+def choose_pokemon()-> tuple:
+    """Allows the user to select a pokemon from a predefined list of three options, Bulbizarre, Salamèche, and Carapuce.
+    \n The function repeatedly prompts the user to make a selection until a valid choice is made and confirmed by the user.
+   
+    Returns:
+        tuple: the user's selected pokemon and a randomly selected Pokemon
+    """    
     pokemon_list = ["Bulbizarre", "Salamèche", "Carapuce"]
     while True:
         print("It's time to choose your pokemon !")
@@ -405,16 +454,32 @@ def choose_pokemon():
                 break
             elif confirm == "n":
                 continue
-            else:
+            elif confirm not in ["y","n"]:
+                print("Invalid input, please choose again")
+                continue
+        if choice not in ["1","2","3"]:
                 print("Invalid input, please choose again")
     enemy = rd.choice(pokemon_list) 
     print("You chose:", player)
     print(f"The enemy chose {enemy}")
-    
     return player, enemy
 
 
+def draw_ascii(FileName:str):
+    """Opens the file with the given name and reads the contents of the file.
+    The contents of the file are then printed to the console. The file is then closed. 
+    The function expects the file to be a plain text file with ascii art representation.
 
+    Args:
+        FileName (str): String representing the name of the file with ascii art representation
+    """
+    file = open(FileName + ".txt","r")
+    image = file.read()
+    print(image)
+    file.close()
 
-
+def play_sound(file_path):
+    playsound(file_path+".wav")
+    
+play_sound("sucess")
     

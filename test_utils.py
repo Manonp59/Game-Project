@@ -21,10 +21,14 @@
 #         self.assertEqual(display_scores(15,20), f'Enemy has 15 lives. I have 20 lives.') 
         
     
-#     def test_create_file(self):
-#         create_file()
-#         with open('scores.csv','r') as fichier:
-#             self.assertIn('Victory' and 'Game n°' and 'You' and 'Enemy', fichier.read())
+    def test_create_file(self):
+        create_file()
+        # Check if the file 'scores.csv' exists
+        self.assertTrue(os.path.exists('scores.csv'))
+        # Check if the file is not empty
+        self.assertGreater(os.path.getsize('scores.csv'), 0)
+        with open('scores.csv','r') as fichier:
+            self.assertIn('Victory' and 'Game n°' and 'You' and 'Enemy', fichier.read())
      
      
     # # Define possible values of inputs and verify the return

@@ -25,7 +25,7 @@ while choice == "1":
     # Update of the game number
     game += 1
     # Display of the scores
-    display_scores(enemy_lives, player_lives)
+    display_scores(enemy_lives, player_lives, player, enemy)
     # Check if no one died
     while no_one_is_dead(player_lives, enemy_lives):
             # Display who plays
@@ -36,27 +36,27 @@ while choice == "1":
             if choice =='1':
                 # Update of the scores with attack
                 player_lives, enemy_lives, player_special_hits, enemy_special_hits = attack('you', player, enemy, player_special_hits, enemy_special_hits, player_lives, enemy_lives)
-                display_scores(player_lives, enemy_lives)
+                display_scores(player_lives, enemy_lives, player, enemy)
                 if not no_one_is_dead(player_lives, enemy_lives):
                     break    
             # If player choose potion
             elif choice == '2':
                 # Update of the scores with potion
                 player_lives, player_potion, enemy_lives, enemy_potion = drink_potion('you', player_lives, player_potion, enemy_lives, enemy_potion)
-                display_scores(player_lives, enemy_lives)
+                display_scores(player_lives, enemy_lives, player, enemy)
                 # Displays who plays
             print("It's enemy's turn.")
             choice = menu('enemy', player_potion, enemy_potion, enemy_lives)
             if choice == '1':
             # Update of the score with attack
                 player_lives, enemy_lives, player_special_hits, enemy_special_hits = attack('enemy', player, enemy, player_special_hits, enemy_special_hits, player_lives, enemy_lives)
-                display_scores(player_lives, enemy_lives)
+                display_scores(player_lives, enemy_lives, player, enemy)
                 if not no_one_is_dead(player_lives, enemy_lives):
                     break  
             elif choice == '2' :
                 # Update of scores with attack
                 player_lives, player_potion, enemy_lives, enemy_potion = drink_potion('enemy', player_lives, player_potion, enemy_lives, enemy_potion)
-                display_scores(player_lives, enemy_lives)
+                display_scores(player_lives, enemy_lives, player, enemy)
     # Someone is dead, so it displays who won 
     player_victory,enemy_victory = who_won(player_lives, enemy_lives, player_victory, enemy_victory)
     # Storage of the scores in a file
