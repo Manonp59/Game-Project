@@ -461,7 +461,7 @@ def choose_pokemon()-> tuple:
             print(f"{i+1}. {pokemon}")    
         choice = input()
         # Verify that choice is a number between 1 et 3
-        if choice.isnumeric() and int(choice) in range(1, 4):
+        if choice.isnumeric() and int(choice) in range(1, len(pokemon_list)+1):
             print("Do you confirm your choice? [y/n])")
             confirm = input()
             if confirm == "y":
@@ -472,7 +472,7 @@ def choose_pokemon()-> tuple:
             elif confirm not in ["y","n"]:
                 print("Invalid input, please choose again")
                 continue
-        if choice not in ["1","2","3"]:
+        if choice not in [str(i) for i in range(1,len(pokemon_list)+1)]:
                 print("Invalid input, please choose again")
     # The enemy's pokemon is randomly chosen
     enemy = rd.choice(pokemon_list) 
