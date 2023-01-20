@@ -157,11 +157,12 @@ def menu(who_plays:int, player_potion, enemy_potion, enemy_lives) -> str:
     if who_plays == 'you':
         if player_potion > 0 :
             choice = input(f'You have {player_potion} potion(s). To attack, type 1. To drink potion, type 2.')
+            print(choice)
+            while choice != "1" and choice != "2" :
+                print("Please press 1 or 2.")
+                choice = input(f'You have {player_potion} potion(s). To attack, type 1. To drink potion, type 2.')
             if choice == "1" or choice == "2":
                 return choice
-            else : 
-                print('Please type a correct value.')
-                choice = input('To attack, type 1. To drink potion, type 2.')
         else :
             print("You don't have potion anymore. You must attack.")
             return "1"
@@ -189,6 +190,9 @@ def principal_menu() -> str:
     str: the player's choice (either "1", "2" or "3")
     """
     choice = input('What do you want to do ? To play press 1, to end the game press 2, to display the rules press 3.')
+    while choice != "1" and choice != "2"  and choice != "3" :
+        print('Please, press 1, 2 or 3.')
+        choice = input('What do you want to do ? To play press 1, to end the game press 2, to display the rules press 3.')
     if choice == "1":
         return choice 
     elif choice == "2":
@@ -197,9 +201,6 @@ def principal_menu() -> str:
         print("RULES OF THE GAME")
         choice = input('What do you want to do ? To play press 1, to end the game press 2.')
         return choice
-    else : 
-        print('Please, press 1, 2 or 3.')
-        choice = input()
         
 def display_welcome():
     ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
@@ -255,6 +256,9 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
             # Special hit
             if player == 'Bulbizarre' and enemy == 'Carapuce' :
                 choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
+                while choice != "1" and choice != "2" :
+                    print("Please press 1 or 2.")
+                    choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
                 if choice == "1":
                     damage = rd.randint(15,25)
                     enemy_lives -= damage
@@ -272,6 +276,9 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
             # Special hit or not
             if player == 'Carapuce' and enemy == 'Salamèche':
                 choice = input(f'You can use special hit against Salamèche ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
+                while choice != "1"  and choice != "2" :
+                    print("Please press 1 or 2.")
+                    choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
                 if choice == "1":
                     damage = rd.randint(15,25)
                     enemy_lives -= damage
@@ -289,6 +296,9 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
             # Special hit
             if player == 'Salamèche' and enemy == 'Bulbizarre' :
                 choice = input(f'You can use special hit against Bulbizarrere ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
+                while choice != "1" and choice != "2" :
+                    print("Please press 1 or 2.")
+                    choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
                 if choice == "1":
                     damage = rd.randint(15,25)
                     enemy_lives -= damage
@@ -327,6 +337,9 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
                     damage = rd.randint(5,15)
                     player_lives -= damage
                     print('Enemy hits you with a normal hit.')
+                else : 
+                    print('Please, press 1 or 2.')
+                    choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
             # Normal hit
             if enemy == 'Carapuce' and (player == 'Carapuce' or player == 'Bulbizarre'):
                 damage = rd.randint(5,15)
@@ -344,6 +357,9 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
                     damage = rd.randint(5,15)
                     player_lives -= damage
                     print('Enemy hits you with a normal hit.')
+                else : 
+                    print('Please, press 1 or 2.')
+                    choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
             # Normal hit
             if enemy == 'Salamèche' and (player == 'Salamèche' or player == 'Carapuce'):
                 damage = rd.randint(5,15)
@@ -361,6 +377,9 @@ def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, pl
                     damage = rd.randint(5,15)
                     player_lives -= damage
                     print('Enemy hits you with a normal hit.')
+                else : 
+                    print('Please, press 1 or 2.')
+                    choice = input(f'You can use special hit against Carapuce ! You have {player_special_hits} special hits. Press 1 to use it, press 2 for a normal hit.')
         # Special hits aren't available anymore
         else : 
             damage = rd.randint(5,15)
@@ -394,12 +413,7 @@ def choose_pokemon():
     
     return player, enemy
 
-player = 'Bulbizarre'
-enemy = 'Bulbizarre'
-player_special_hits = 2
-enemy_special_hits = 2
-enemy_lives = 50
-player_lives = 50
+
 
 
 
