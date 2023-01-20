@@ -11,7 +11,7 @@ Pour que le programme fonctionne correctement, les fichiers et dossier suivants 
     - dossier Pokemon_Ascii  
     - dossier Sounds
 
-## utils.py:
+## utils.py:
 
 Ce fichier contient des fonctions pour jouer le jeu et gérer les scores d'un jeu de combat.
 
