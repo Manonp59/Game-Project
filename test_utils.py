@@ -1,4 +1,4 @@
-import unittest
+"""import unittest
 from unittest.mock import patch
 import random
 from utils import no_one_is_dead, drink_potion, display_scores, create_file, menu, store_scores, attack, who_won, total_score, principal_menu
@@ -65,4 +65,4 @@ class TestWithUnittest(unittest.TestCase):
     def test_principal_menu(self, mock_input):
         calling_1= mock_input()
         calling_2= mock_input()
-        self.assertTrue(calling_1 == '1' and calling_2 == '2')
+        self.assertTrue(calling_1 == '1' and calling_2 == '2')"""

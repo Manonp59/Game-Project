@@ -2,7 +2,7 @@ import random as rd
 import csv
 from termcolor import colored
 import pyfiglet
-import pygame
+import pygobject
 
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
@@ -401,6 +401,10 @@ enemy_special_hits = 2
 enemy_lives = 50
 player_lives = 50
 
+from playsound  import playsound
 
-
+def play_sound(file_path):
+    playsound(file_path+".wav")
+    
+play_sound("sucess")
     
