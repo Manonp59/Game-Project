@@ -1,7 +1,7 @@
 from utils import choose_pokemon, no_one_is_dead, attack, drink_potion, display_scores, who_won, store_scores, menu, principal_menu, create_file, total_score, display_welcome
 import random as rd 
 
-
+# Welcome message and song
 display_welcome()
     
 # Variables 

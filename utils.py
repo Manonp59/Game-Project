@@ -4,6 +4,7 @@ from termcolor import colored
 import pyfiglet
 from playsound import playsound
 
+
 def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
     """Function wich verify that no one is dead.
 
@@ -21,16 +22,20 @@ def no_one_is_dead (player_lives:int,enemy_lives:int) -> bool:
         return True 
 
 
-def drink_potion(who_plays, player_lives:int, player_potion:int, enemy_lives:int, enemy_potion:int) -> tuple:
+def drink_potion(who_plays:str, player_lives:int, player_potion:int, enemy_lives:int, enemy_potion:int) -> tuple:
     """The function increases the player's lives by a random amount between 15 and 50, but not exceeding 50. \n
     It also decrements the number of potions by 1.
 
     Args:
         player_lives (int): representing the number of lives the player has
-        potion (int): representing the number of potions the player has
+        who_plays(str): representing who's turn is
+        player_potion (int) : representing the number of players's potion 
+        enemy_potion(int) : representing the number of enemy's potion 
+        enemy_lives(int) : representing the number of lives the enemy has
+        
 
     Returns:
-        tuple: containing the updated number of lives, number of potions.
+        tuple: containing the updated number of lives, number of potions for both players.
     """
     if who_plays == 'you':
         print('You chose to drink a potion. Tchin !')
@@ -47,7 +52,7 @@ def drink_potion(who_plays, player_lives:int, player_potion:int, enemy_lives:int
     return player_lives, player_potion, enemy_lives, enemy_potion
 
 
-def display_scores(player_lives:int, enemy_lives:int, player:str, enemy:str):
+def display_scores(player_lives:int, enemy_lives:int, player:str, enemy:str) -> None :
     """Displays the pokémon and the number of lives of both the enemy and the player.
     
     Args:
@@ -58,55 +63,57 @@ def display_scores(player_lives:int, enemy_lives:int, player:str, enemy:str):
     """
     player_score = f'YOU: {player_lives}HP'           
     enemy_score= f'ENEMY: {enemy_lives}HP'
-    # Calling of de drawAscii function to display the right pokémons
+    # Calling of de draw_ascii function to display the right pokémons
     if player == 'Bulbizarre':
         if enemy == 'Bulbizarre':
-            draw_ascii("Pokémons_Ascii/bulbul")
+            draw_ascii("Pokemons_Ascii/bulbul")
         elif enemy == 'Salamèche':
-            draw_ascii("Pokémons_Ascii/bulsal")
+            draw_ascii("Pokemons_Ascii/bulsal")
         elif enemy == 'Carapuce':
-            draw_ascii("Pokémons_Ascii/bulcar")
+            draw_ascii("Pokemons_Ascii/bulcar")
     if player == 'Salamèche':
         if enemy == 'Bulbizarre':
-            draw_ascii("Pokémons_Ascii/salbul")
+            draw_ascii("Pokemons_Ascii/salbul")
         elif enemy == 'Salamèche':
-            draw_ascii("Pokémons_Ascii/salsal")
+            draw_ascii("Pokemons_Ascii/salsal")
         elif enemy == 'Carapuce':
-            draw_ascii("Pokémons_Ascii/salcar")
+            draw_ascii("Pokemons_Ascii/salcar")
     if player == 'Carapuce':
         if enemy == 'Bulbizarre':
-            draw_ascii("Pokémons_Ascii/carbul")
+            draw_ascii("Pokemons_Ascii/carbul")
         elif enemy == 'Salamèche':
-            draw_ascii("Pokémons_Ascii/carsal")
+            draw_ascii("Pokemons_Ascii/carsal")
         elif enemy == 'Carapuce':
-            draw_ascii("Pokémons_Ascii/carcar")
+            draw_ascii("Pokemons_Ascii/carcar")
     print(colored('\t\t'+player_score, 'black', 'on_blue', ['bold']), end='\t\t\t\t\t')
     print(colored(enemy_score, 'black', 'on_red', ['bold']))
 
 
 def who_won(player_lives:int, enemy_lives:int,player_victory:int, enemy_victory:int) -> tuple:
     """The function checks which player has more lives and prints who is the winner. \n
-    It also counts the number of victories for each player.
+    It also counts the number of victories for each player. It plays a sound of victory or defeat.
 
     Args:
         enemy_lives (int): represents the number of lives the enemy has
         player_lives (int): represents the number of lives the player has
+        player_victory (int) : represents the number of victory the player has 
+        enemy_victory (int) : represents the numer of victory the enemy has 
         
     Returns: 
         tuple: the number of victories of each player
     """
     if player_lives > enemy_lives:
-        print('You won !!!!!')
-        play_sound("Sounds/sucess")
+        print(pyfiglet.figlet_format('You won !'))
+        play_sound("Sounds/success.wav")
         player_victory += 1
     else : 
-        print('Enemy wons...')
+        print(pyfiglet.figlet_format('You loose ...'))
         enemy_victory += 1
-        play_sound("Sounds/defeat")
+        play_sound("Sounds/defeat.wav")
     return player_victory, enemy_victory
 
 
-def create_file():
+def create_file() -> None :
     """This function creates a CSV file named 'scores.csv' if it does not exist, and writes a header row with the following titles: "Game n°", "You", "Enemy", "Victory". \n 
     This function is used to initialize the file to store the scores of the played games.
     """
@@ -119,7 +126,7 @@ def create_file():
         write.writerow(["","Game n°", "You", "Enemy", "Victory"])
         
 
-def store_scores(game:int, player_lives:int, enemy_lives:int):
+def store_scores(game:int, player_lives:int, enemy_lives:int) -> None :
     """This function stores the scores of a game in a CSV file named 'scores.csv. \n
     It uses the CSV library to write the game number, player lives, enemy lives, and the winner of the game (either 'You' or 'enemy') to a new row in the CSV file.
 
@@ -139,7 +146,7 @@ def store_scores(game:int, player_lives:int, enemy_lives:int):
         write.writerow(["",game, player_lives, enemy_lives,victory])  
   
         
-def total_score(player_victory:int, enemy_victory:int):
+def total_score(player_victory:int, enemy_victory:int) -> None :
     """
     Store the total scores of the games played in the CSV file. 
 
@@ -165,14 +172,18 @@ def total_score(player_victory:int, enemy_victory:int):
         write.writerow(["Total",player_victory, enemy_victory, winner])
 
 
-def menu(who_plays:int, player_potion, enemy_potion, enemy_lives) -> str:
+def menu(who_plays:int, player_potion:int, enemy_potion:int, enemy_lives:int) -> str:
     """"This function is a menu for a game where the player can choose to attack or drink a potion. \n 
     It prompts the player to input their choice (either '1' to attack or '2' to drink a potion). \n
     If the player inputs an invalid choice, they will be prompted again. \n
     If the player has no potions, they will automatically be forced to attack and the function will return '1'."
     
     Args:
-        potion (int): the number of potions the player has.
+        player_potion (int): the number of potions the player has.
+        who_plays(str) : determine who's turn is
+        enemy_potion (int) : the number of potions the enemy has
+        enemy_lives (int) : the number of lives the enemy has
+        
         
     Returns:
         str: the player's choice
@@ -228,7 +239,7 @@ def principal_menu() -> str:
         choice = input()
 
 
-def display_rules():
+def display_rules() -> None:
     """Dsiplay the rules of the game
     """
     print("")
@@ -248,24 +259,24 @@ def display_rules():
     print("")
  
            
-def display_welcome():
-    """Displays an ASCII banner with the message "WELCOME TO POKEMON FIGHT" using the pyfiglet library.
+def display_welcome() -> None:
+    """Displays an ASCII banner with the message "WELCOME TO POKEMON FIGHT" using the pyfiglet library. It also plays the welcome song using the playsound library.
     """
-    
     ascii_banner = pyfiglet.figlet_format("     WELCOME TO \n POKEMON FIGHT")
-    print(ascii_banner)      
+    print(ascii_banner)  
+    play_sound('Sounds/welcome.mp3')    
  
 
 def play_sound(music:str) -> None:
     """Play the sound from a wav file.
     
     Arg:
-    music (str): The name of the wav file to play.
+    music (str): The name of the file to play.
     """
-    playsound(music+".wav")
+    playsound(music)
     
 
-def attack(who_plays, player, enemy, player_special_hits, enemy_special_hits, player_lives, enemy_lives) -> None:
+def attack(who_plays:str, player:str, enemy:str, player_special_hits:int, enemy_special_hits:int, player_lives:int, enemy_lives:int) -> None:
     """This function simulates an attack on the player or enemy depending on who's turn it is.
        The attack is based on the type of the player and enemy pokemon and the number of special hits available.
        The player can choose if he uses a special hit. 
@@ -446,6 +457,7 @@ def choose_pokemon()-> tuple:
         for i, pokemon in enumerate(pokemon_list):
             print(f"{i+1}. {pokemon}")    
         choice = input()
+        # Verify that choice is a number between 1 et 3
         if choice.isnumeric() and int(choice) in range(1, 4):
             print("Do you confirm your choice? [y/n])")
             confirm = input()
@@ -459,27 +471,25 @@ def choose_pokemon()-> tuple:
                 continue
         if choice not in ["1","2","3"]:
                 print("Invalid input, please choose again")
+    # The enemy's pokemon is randomly chosen
     enemy = rd.choice(pokemon_list) 
     print("You chose:", player)
     print(f"The enemy chose {enemy}")
     return player, enemy
 
 
-def draw_ascii(FileName:str):
+def draw_ascii(file_name:str) -> None :
     """Opens the file with the given name and reads the contents of the file.
     The contents of the file are then printed to the console. The file is then closed. 
     The function expects the file to be a plain text file with ascii art representation.
 
     Args:
-        FileName (str): String representing the name of the file with ascii art representation
+        file_name (str): String representing the name of the file with ascii art representation
     """
-    file = open(FileName + ".txt","r")
+    file = open(file_name + ".txt","r")
     image = file.read()
     print(image)
     file.close()
 
-def play_sound(file_path):
-    playsound(file_path+".wav")
-    
-play_sound("sucess")
+
     
